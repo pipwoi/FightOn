@@ -100,10 +100,13 @@ class LexicalAnalyzer:
                     lexeme.append(token_lexeme)
                     row.append(self.lin_num)
                     # To print information about a Token
-                    tab_row.append('{:>8} {:>16} {:>8}, {:>3}\n'
-                                         .format(token_lexeme, token_type,  self.lin_num, col))
 
-        except: lexerror.append('\nLexical Error on Line {:>3}, {:>3}'.format(self.lin_num, col))
+                    print(token_lexeme)
+                    tab_row.append('{:>10} {:>16} {:>8}, {:>3}\n'
+                                             .format(token_lexeme, token_type,  self.lin_num, col))
+
+        except:
+            lexerror.append('\n  Lexical Error on Line {} : {}'.format(self.lin_num, token_lexeme))
 
 
         return token, lexeme, row, column, lexerror, tab_row
