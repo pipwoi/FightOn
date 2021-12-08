@@ -13,14 +13,17 @@ if __name__ == '__main__':
     lexeme = []
     row = []
     column = []
+    lexerror = []
 
     # Tokenize and reload of the buffer
     for i in Buffer.load_buffer():
-        t, lex, lin, col = Analyzer.tokenize(i)
+        t, lex, lin, col, le = Analyzer.tokenize(i)
         token += t
         lexeme += lex
         row += lin
         column += col
+        lexerror += le
 
     print('\nRecognize Tokens: ', token)
+    print(*lexerror, sep='')
 

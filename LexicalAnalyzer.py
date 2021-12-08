@@ -4,40 +4,37 @@ import re
 class LexicalAnalyzer:
     # Token row
     lin_num = 1
-
+    print('\n<LEXEME>___________<TOKEN>______________<LINE> ')
     def tokenize(self, code):
         rules = [
             # FightOn
-            ('clock', r'clock'),
-            ('hover', r'hover'),
-            ('rope', r'rope'),
-            ('coin', r'coin'),
-            ('party', r'party'),
-            ('quest', r'quest'),
-            ('job', r'job'),
-            ('listen', r'listen'),
-            ('say', r'say'),
-            ('tower', r'tower'),
-
+            ('CLOCK', r'clock'),
+            ('HOVER', r'hover'),
+            ('ROPE', r'rope'),
+            ('COIN', r'coin'),
+            ('PARTY', r'party'),
+            ('QUEST', r'quest'),
+            ('JOB', r'job'),
+            ('LIST', r'listen'),
+            ('SAY', r'say'),
+            ('TOWER', r'tower'),
 
             ('OR', r'\|\|'),
             ('AND', r'&&'),
             ('NOT', r'NOT'),
             ('START', r'START'),
             ('END', r'END'),
-            ('while', r'while'),
-            ('break', r'break'),
-            ('case', r'case'),
-            ('continue', r'continue'),
-            ('default', r'default'),
-            ('do', r'do'),
-            ('elif', r'elif'),
-            ('else', r'else'),
-            ('for', r'for'),
-            ('if', r'if'),
-            ('switch', r'switch'),
-
-            # ('', r''),
+            ('WHILE', r'while'),
+            ('BREAK', r'break'),
+            ('CASE', r'case'),
+            ('CONTINUE', r'continue'),
+            ('DEFAULT', r'default'),
+            ('DO', r'do'),
+            ('ELIF', r'elif'),
+            ('ELSE', r'else'),
+            ('FOR', r'for'),
+            ('IF', r'if'),
+            ('SWITCH', r'switch'),
 
             ('MAIN', r'main'),          # while
             ('READ', r'read'),          # read
@@ -59,9 +56,10 @@ class LexicalAnalyzer:
             ('MINUS', r'-'),            # -
             ('MULT', r'\*'),            # *
             ('DIV', r'\/'),             # /
-            ('ID', r'[a-z]\w*'),     # IDENTIFIERS
+
+            ('ID', r'[a-z]\w*'),        # IDENTIFIERS
             ('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),   # FLOAT
-            ('CLOCK_CONST', r'\d(\d)*'),          # INT
+            ('CLOCK_CONST', r'\d(\d)*'),            # INT
             ('NEWLINE', r'\n'),         # NEW LINE
             ('SKIP', r'[ \t]+'),        # SPACE and TABS
             ('MISMATCH', r'.'),         # ANOTHER CHARACTER
@@ -75,9 +73,10 @@ class LexicalAnalyzer:
         lexeme = []
         row = []
         column = []
+        lexerror = []
 
         try:
-            print('\n<LEXEME>___________<TOKEN>______________<LINE> ')
+
 
         # It analyzes the code to find the lexemes and their respective Tokens
 
@@ -93,16 +92,16 @@ class LexicalAnalyzer:
                 elif token_type == 'MISMATCH':
                     raise RuntimeError('%r unexpected on line %d' % (token_lexeme, self.lin_num))
                 else:
+                    col = m.start() - lin_start
+                    column.append(col)
+                    token.append(token_type)
+                    lexeme.append(token_lexeme)
+                    row.append(self.lin_num)
+                    # To print information about a Token
+                    print('{:>16} {:>16} {:>8}, {:>3}'.format(token_lexeme, token_type,  self.lin_num, col))
 
-                        col = m.start() - lin_start
-                        column.append(col)
-                        token.append(token_type)
-                        lexeme.append(token_lexeme)
-                        row.append(self.lin_num)
-                        # To print information about a Token
-                        print('{:>16} {:>16} {:>8}, {:>3}'.format(token_lexeme, token_type,  self.lin_num, col))
-
-        except: print('\nLexical Error on Line {}'.format( self.lin_num, col))
+        except: lexerror.append('\nLexical Error on Line {:>3}, {:>3}'.format(self.lin_num, col))
 
 
-        return token, lexeme, row, column
+        return token, lexeme, row, column, lexerror
+
