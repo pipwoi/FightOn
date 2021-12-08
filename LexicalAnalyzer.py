@@ -56,6 +56,8 @@ class LexicalAnalyzer:
             ('MULT', r'\*'),            # *
             ('DIV', r'\/'),             # /
 
+
+            ('POUND', r'#'),
             ('ID', r'[a-z]\w*'),        # IDENTIFIERS
             ('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),   # FLOAT
             ('CLOCK_CONST', r'\d(\d)*'),            # INT

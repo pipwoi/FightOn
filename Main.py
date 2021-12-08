@@ -46,8 +46,6 @@ lbl_Code=Label(root, text="Code to Analyze", fg='blue', font=("Helvetica", 16))
 lbl_Code.place(x=50, y=10)  # Code to Analyze
 
 
-btn=Button(root, text="Analyze Code", fg='blue')
-btn.place(x=300, y=10) # Analyze Btn
 
 v0=IntVar()
 v0.set(1)
@@ -78,11 +76,24 @@ output2 = scrolledtext.ScrolledText(root, height = 17, state=NORMAL,
 output1.grid(column=10, row=2, pady=1, padx=10)
 output2.grid(column=360, row=2, pady=50, padx=10)
 
-for tok in tab_row:
-    output1.insert(INSERT, tok)
 
-for le in lexerror:
-    output2.insert(INSERT, le)
+def LexButton():
+    toRead = text_area.get(1.0,END)
+    codefile = open("program.txt", "w")
+    codefile.write(toRead)
+
+    output1.delete('1.0', END)
+    output2.delete('1.0', END)
+
+    for tok in tab_row:
+        output1.insert(INSERT, tok)
+
+    for le in lexerror:
+        output2.insert(INSERT, le)
+
+
+btn=Button(root, text="Analyze Code", fg='blue', command = LexButton)
+btn.place(x=300, y=10) # Analyze Btn
 
 
 root.geometry("1220x400+300+200")
