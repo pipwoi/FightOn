@@ -4,7 +4,6 @@ import re
 class LexicalAnalyzer:
     # Token row
     lin_num = 1
-    print('\n<LEXEME>___________<TOKEN>______________<LINE> ')
     def tokenize(self, code):
         rules = [
             # FightOn
@@ -74,6 +73,7 @@ class LexicalAnalyzer:
         row = []
         column = []
         lexerror = []
+        tab_row = []
 
         try:
 
@@ -98,10 +98,11 @@ class LexicalAnalyzer:
                     lexeme.append(token_lexeme)
                     row.append(self.lin_num)
                     # To print information about a Token
-                    print('{:>16} {:>16} {:>8}, {:>3}'.format(token_lexeme, token_type,  self.lin_num, col))
+                    tab_row.append('{:>8} {:>16} {:>8}, {:>3}\n'
+                                         .format(token_lexeme, token_type,  self.lin_num, col))
 
         except: lexerror.append('\nLexical Error on Line {:>3}, {:>3}'.format(self.lin_num, col))
 
 
-        return token, lexeme, row, column, lexerror
+        return token, lexeme, row, column, lexerror, tab_row
 
