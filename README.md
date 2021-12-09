@@ -1,36 +1,33 @@
-# Simple Lexical Analyzer
+# Fighton Lexical Analyzer
 
-This is a simple lexical analyzer for the C language. The repository contains an example program in C for testing.
+Able to:
+Accept Alphanumeric comments that start with $<space>
+Accept ID that starts with lowercase then alphanumeric (no upper)
 
-The [tokens_lexemes.pdf](https://github.com/christianrfg/lexical-analyzer/blob/master/tokens_lexemes.pdf) file shows the lexemes recognized by the lexical analyzer.
+Issues:
+234ehjjk is not considered as error (no lookahead, lookbehind)
+Only the first character of error is printed
+After an error the next 'paragraph' is not tokenized
 
-### Prerequisites
+Clock (Int) only accepts 5 digits but not delimited by space
+Hover (Float is accepted despite having more than 5 digits
 
-Python 3.5.0 or last version...
-```
-sudo add-apt-repository ppa:fkrull/deadsnakes
-sudo apt-get update
-sudo apt-get install python3.5
-```
+Notable Regex
 
-## Running the tests
+ ('COMMENT', r'\$[ a-zA-Z0-9]\w*'),
+ ('ID', r'(?=[a-z])(?=.*[a-z(\d)*])\w*'),        # IDENTIFIERS
 
-Principal.py is the principal file of the project, just run this file to test the analyzer with default parameters.
+            ('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),   # FLOAT
+            ('CLOCK_CONST', r'\d{1,5}'),          # INT
 
-```
-python Principal.py
-```
 
-The size of buffer, output and *.c* program can be changed as you wish.
 
-## Built With
+Sample
+$ A1AwHA23 HEADS  -23453 
+123.122323
 
-* [Python 3.5.0](https://www.python.org/downloads/release/python-350/) - Python
-* [PyCharm](https://www.jetbrains.com/pycharm/) - Python IDE
+int main() esdf123g6 234ehjjk
 
-## Authors
 
-* **Christian R. F. Gomes** - [christianrfg](https://github.com/christianrfg)
-* **Pedro Souza** - email: pedronhds@gmail.com
-
-See also the list of [contributors](https://github.com/christianrfg/lexical-analyzer/graphs/contributors) who participated in this project.
+## Original Code Source
+https://github.com/christianrfg/lexical-analyzer

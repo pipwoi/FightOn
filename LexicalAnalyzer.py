@@ -7,10 +7,12 @@ class LexicalAnalyzer:
     def tokenize(self, code):
         rules = [
             # FightOn
+            ('COMMENT', r'\$[ a-zA-Z0-9]\w*'),
             ('CLOCK', r'clock'),
             ('HOVER', r'hover'),
             ('ROPE', r'rope'),
             ('COIN', r'coin'),
+            ('COIN_VAL', r'HEADS'),
             ('PARTY', r'party'),
             ('QUEST', r'quest'),
             ('JOB', r'job'),
@@ -36,15 +38,15 @@ class LexicalAnalyzer:
             ('SWITCH', r'switch'),
 
             ('MAIN', r'main'),          # while
-            ('READ', r'read'),          # read
-            ('PRINT', r'print'),        # print
             ('LBRACKET', r'\('),        # (
             ('RBRACKET', r'\)'),        # )
             ('LBRACE', r'\{'),          # {
             ('RBRACE', r'\}'),          # }
             ('COMMA', r','),            # ,
-            ('PCOMMA', r';'),           # ;
+            ('SEMICOL', r';'),          # :
+            ('COLON', r':'),            # ;
             ('EQ', r'=='),              # ==
+            ('ASSIGN', r'='),           # =
             ('NE', r'!='),              # !=
             ('LE', r'<='),              # <=
             ('GE', r'>='),              # &&
@@ -56,11 +58,9 @@ class LexicalAnalyzer:
             ('MULT', r'\*'),            # *
             ('DIV', r'\/'),             # /
 
-
-            ('POUND', r'#'),
-            ('ID', r'[a-z]\w*'),        # IDENTIFIERS
+            ('ID', r'(?=[a-z])(?=.*[a-z(\d)*])\w*'),        # IDENTIFIERS
             ('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),   # FLOAT
-            ('CLOCK_CONST', r'\d(\d)*'),            # INT
+            ('CLOCK_CONST', r'\d{1,5}'),          # INT
             ('NEWLINE', r'\n'),         # NEW LINE
             ('SKIP', r'[ \t]+'),        # SPACE and TABS
             ('MISMATCH', r'.'),         # ANOTHER CHARACTER
@@ -77,9 +77,8 @@ class LexicalAnalyzer:
         lexerror = []
         tab_row = []
 
+
         try:
-
-
         # It analyzes the code to find the lexemes and their respective Tokens
 
             for m in re.finditer(tokens_join, code):
@@ -101,12 +100,12 @@ class LexicalAnalyzer:
                     row.append(self.lin_num)
                     # To print information about a Token
 
-                    print(token_lexeme)
                     tab_row.append('{:>10} {:>16} {:>8}, {:>3}\n'
                                              .format(token_lexeme, token_type,  self.lin_num, col))
 
         except:
             lexerror.append('\n  Lexical Error on Line {} : {}'.format(self.lin_num, token_lexeme))
+            self.lin_num += 1
 
 
         return token, lexeme, row, column, lexerror, tab_row
