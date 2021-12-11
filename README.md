@@ -1,32 +1,31 @@
 # Fighton Lexical Analyzer
 
-Able to:
-Accept Alphanumeric comments that start with $<space>
-Accept ID that starts with lowercase then alphanumeric (no upper)
+Updates:
+Comment is no longer one word
+Rope Lit is no longer one word and apostrophe is included
+Display error when float ends with decilmal point
 
 Issues:
-234ehjjk is not considered as error (no lookahead, lookbehind)
 Only the first character of error is printed
-After an error the next 'paragraph' is not tokenized
-
-Clock (Int) only accepts 5 digits but not delimited by space
-Hover (Float is accepted despite having more than 5 digits
+Long errors cause the system to not tokens a few lines below it
+Special Characters that arent underscore is not accepted by Rope lit
 
 Notable Regex
 
- ('COMMENT', r'\$[ a-zA-Z0-9]\w*'),
- ('ID', r'(?=[a-z])(?=.*[a-z(\d)*])\w*'),        # IDENTIFIERS
+            ('COMMENT', r'\$(?=.*[\sa-zA-Z0-9])\w*( \w+)*(?=.*[\n])'),
+            ('ROPELIT', r'\'(?=.*[a-zA-Z0-9_])\w*( \w+)*(\s*)\''),
 
-            ('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),   # FLOAT
-            ('CLOCK_CONST', r'\d{1,5}'),          # INT
+            ('HOVER_CONST', r'\d{1,10}\.\d{1,5}(?=.*[ \n\t])'),  # FLOAT
+            ('CLOCK_CONST', r'\d{1,10}[\s](?=.*[ \n\t])'),  # INT
 
+            ('ID', r'(?=[a-z])(?=.*[a-z(\d)*])\w*(?=.*[ \n()])'),       # ID1 not max 16
+            ('ID', r'(?=[a-z])[a-z0-9]{1,10}[\s\n()]'),  # ID2 max 16 hides token below error
 
+REQUEST!! FOR LOOP is based on C and C++
 
 Sample
 $ A1AwHA23 HEADS  -23453 
 123.122323
-
-int main() esdf123g6 234ehjjk
 
 
 ## Original Code Source

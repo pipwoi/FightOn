@@ -10,41 +10,44 @@ class LexicalAnalyzer:
             # FightOn
 
             # generic delimiter (?=.*[ \n\t])
-            ('COMMENT', r'\$[ a-zA-Z0-9]\w*(?=.*[\n])'),
-            ('CLOCK', r'clock(?=.*[ \n\t])'),
-            ('HOVER', r'hover(?=.*[ \n\t])'),
-            ('ROPE', r'rope(?=.*[ \n\t])'),
-            ('COIN', r'coin(?=.*[ \n\t])'),
-            ('COIN_VAL', r'HEADS|TAILS(?=.*[ \n\t])'),
-            ('PARTY', r'party(?=.*[ \n\t])'),
-            ('QUEST', r'quest(?=.*[ \n\t])'),
-            ('JOB', r'job(?=.*[ \n\t])'),
-            ('LISTEN', r'listen(?=.*[ \n\t])'),
-            ('SAY', r'say(?=.*[ \n\t])'),
-            ('TOWER', r'tower(?=.*[ \n\t])'),
+            ('COMMENT', r'\$(?=.*[\sa-zA-Z0-9])\w*( \w+)*(?=.*[\n])'),
+
+            ('ROPE_LIT', r'\'(?=.*[!a-zA-Z0-9_>])\w*( \w+)*(\s*)\''),  # ROPELIT
+
+            ('HOVER_CONST', r'\d{1,10}\.\d{1,5}(?=.*[ \n\t])'),  # FLOAT
+            ('CLOCK_CONST', r'\d{1,10}[\s](?=.*[ \n\t])'),  # INT
+
+            ('clock', r'clock(?=.*[ \n\t])'),
+            ('hover', r'hover(?=.*[ \n\t])'),
+            ('rope', r'rope(?=.*[ \n\t])'),
+            ('coin', r'coin(?=.*[ \n\t])'),
+            ('COIN_VAL', r'HEADS(?=.*[ \n\t])'),
+            ('party', r'party(?=.*[ \n\t])'),
+            ('quest', r'quest(?=.*[ \n\t])'),
+            ('job', r'job(?=.*[ \n\t])'),
+            ('listen', r'listen(?=.*[ \n\t])'),
+            ('say', r'say(?=.*[ \n\t])'),
+            ('tower', r'tower(?=.*[ \n\t])'),
             ('STOCK', r'STOCK(?=.*[ \n\t])'),
 
             #('OR', r'OR'),
+            #('OR', r'\|\|'),
             ('AND', r'AND(?=.*[ \n\t])'),
             ('NOT', r'NOT(?=.*[ \n\t])'),
             ('START', r'START(?=.*[ \n\t])'),
             ('END', r'END(?=.*[ \n\t])'),
-            ('WHILE', r'while(?=.*[ \n\t:])'),
-            ('BREAK', r'break(?=.*[ \n\t;])'),
-            ('CASE', r'case(?=.*[ \n\t])'),
-            ('CONTINUE', r'continue(?=.*[ \n\t])'),
-            ('DEFAULT', r'default(?=.*[ \n\t])'),
-            ('DO', r'do(?=.*[ \n\t:])'),
-            ('ELIF', r'elif(?=.*[ \n\t:])'),
-            ('ELSE', r'else(?=.*[ \n\t:])'),
-            ('FOR', r'for'),
-            ('IF', r'if'),
-            ('SWITCH', r'switch'),
+            ('while', r'while(?=.*[ \n\t:])'),
+            ('break', r'break(?=.*[ \n\t;])'),
+            ('case', r'case(?=.*[ \n\t])'),
+            ('continue', r'continue(?=.*[ \n\t])'),
+            ('default', r'default(?=.*[ \n\t])'),
+            ('do', r'do(?=.*[ \n\t:])'),
+            ('elif', r'elif(?=.*[ \n\t:])'),
+            ('else', r'else(?=.*[ \n\t:])'),
+            ('for', r'for'),
+            ('if', r'if'),
+            ('switch', r'switch'),
 
-            #('OR', r'\|\|'),
-
-            ('CLOCK_CONST', r'\d{1,10}(?=.*[ \n\t])'),  # INT
-            # ('ROPELIT', r'\'(?=[a-z])\''),  # ROPELIT
             # ('SQUOTE', r'\''),
             ('DQUOTE', r'\"(?=.*[ \n\t])'),
             ('TQUOTE', r'\'\'\''),
@@ -82,9 +85,7 @@ class LexicalAnalyzer:
             ('DOLLAR', r'\$(?=.*[ \n\t])'),          # $
             ('EXCLA', r'!(?=.*[ \n\t])'),            # !
 
-
-
-            ('ID', r'(?=[a-z])(?=.*[a-z(\d)*])\w*(?=.*[ \n()])'),        # IDENTIFIERS
+            ('ID', r'(?=[a-z])[a-z0-9]{1,15}[\s\n()]'),        # IDENTIFIERS
 
             #('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),  # FLOAT
             ('NEWLINE', r'\n'),         # NEW LINE
@@ -126,8 +127,8 @@ class LexicalAnalyzer:
                     row.append(self.lin_num)
                     # To print information about a Token
 
-                    tab_row.append('{:>10} {:>16} {:>8}, {:>3}\n'
-                                   .format(token_lexeme, token_type, self.lin_num, col))
+                    tab_row.append('{:>5}, {:>3}{:>15} {:>15}\n'
+                                   .format(self.lin_num, col, token_type, token_lexeme))
 
 
         except:

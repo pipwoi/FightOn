@@ -44,14 +44,14 @@ root.title("Fight0n Lexical Analyzer")
 lbl_Code = Label(root, text="Code to Analyze", fg='blue', font=("Helvetica", 16))
 lbl_Code.place(x=50, y=10)
 
-lbl_lex = Label(root, text="LEXEME", font=("Helvetica", 12))
-lbl_lex.place(x=480, y=10)
+lbl_lex = Label(root, text="LINE", font=("Helvetica", 12))
+lbl_lex.place(x=500, y=10)
 
 lbl_token = Label(root, text="TOKEN", font=("Helvetica", 12))
-lbl_token.place(x=620, y=10)
+lbl_token.place(x=600, y=10)
 
-lbl_line = Label(root, text="LINE", font=("Helvetica", 12))
-lbl_line.place(x=740, y=10)
+lbl_line = Label(root, text="LEXEME", font=("Helvetica", 12))
+lbl_line.place(x=720, y=10)
 
 v0 = IntVar()
 v0.set(1)
