@@ -12,13 +12,16 @@ class LexicalAnalyzer:
             # generic delimiter (?=.*[ \n\t])
             ('COMMENT', r'\$(?=.*[\sa-zA-Z0-9])\w*( \w+)*(?=.*[\n])'),
 
-            ('ROPE_LIT', r'\'(?=.*[!a-zA-Z0-9_>])\w*( \w+)*(\s*)\''),  # ROPELIT
+            ('RUNE_LIT', r'\'[\s!a-zA-Z0-9_\(\),]\''),                      # RUNELIT
+            ('ROPE_LIT', r'\"(?=.*[\sa-zA-Z0-9_\(\)])\w*( \w+)*(\s*)\"'),   # ROPELIT
 
-            ('HOVER_CONST', r'\d{1,10}\.\d{1,5}(?=.*[ \n\t])'),  # FLOAT
-            ('CLOCK_CONST', r'\d{1,10}[\s](?=.*[ \n\t])'),  # INT
+            ('HOVER_LIT', r'\d{1,10}\.\d{1,5}(?=.*[ \n\t])'),         # FLOAT
+            ('CLOCK_LIT', r'\d{1,10}[\s](?=.*[ \n\t])'),              # INT
+
 
             ('clock', r'clock(?=.*[ \n\t])'),
             ('hover', r'hover(?=.*[ \n\t])'),
+            ('rune', r'rune(?=.*[ \n\t])'),
             ('rope', r'rope(?=.*[ \n\t])'),
             ('coin', r'coin(?=.*[ \n\t])'),
             ('COIN_VAL', r'HEADS(?=.*[ \n\t])'),
@@ -48,13 +51,14 @@ class LexicalAnalyzer:
             ('if', r'if'),
             ('switch', r'switch'),
 
+            ('ID', r'(?=[a-z])[a-z0-9_]{1,15}(?=.*[\s\n\t(])'),  # IDENTIFIERS
             # ('SQUOTE', r'\''),
-            ('DQUOTE', r'\"(?=.*[ \n\t])'),
-            ('TQUOTE', r'\'\'\''),
+            #('DQUOTE', r'\"(?=.*[ \n\t])'),
+            #('TQUOTE', r'\'\'\''),
             ('BSLASH', r'\\(?=.*[ \n\t])'),
             ('TILDE', r'~(?=.*[ \n\t])'),
 
-            ('LBRACKET', r'\((?=.*[ \n\t()a-z0-9\'\"])'),   # check (
+            ('LBRACKET', r'\((?=.*[ \n\t\(\)a-z0-9\'\"])'),   # check (
             ('RBRACKET', r'\)(?=.*[ \n\t)\+\-\*\/%;])'),    # check )
             ('LBRACE', r'\{(?=.*[ \n\t])'),                 # { check?
             ('RBRACE', r'\}(?=.*[ \n\t()a-z0-9])'),         # } check
@@ -85,7 +89,6 @@ class LexicalAnalyzer:
             ('DOLLAR', r'\$(?=.*[ \n\t])'),          # $
             ('EXCLA', r'!(?=.*[ \n\t])'),            # !
 
-            ('ID', r'(?=[a-z])[a-z0-9]{1,15}[\s\n()]'),        # IDENTIFIERS
 
             #('HOVER_CONST', r'\d(\d)*\.\d(\d)*'),  # FLOAT
             ('NEWLINE', r'\n'),         # NEW LINE
@@ -126,6 +129,10 @@ class LexicalAnalyzer:
                     lexeme.append(token_lexeme)
                     row.append(self.lin_num)
                     # To print information about a Token
+
+                    if token_type == 'CLOCK_LIT' or token_type == 'HOVER_LIT':
+                        token_lexeme = token_lexeme.strip("0")
+                        print(token_lexeme)
 
                     tab_row.append('{:>5}, {:>3}{:>15} {:>15}\n'
                                    .format(self.lin_num, col, token_type, token_lexeme))
