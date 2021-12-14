@@ -47,10 +47,10 @@ lbl_Code.place(x=50, y=10)
 lbl_lex = Label(root, text="LINE", font=("Helvetica", 12))
 lbl_lex.place(x=500, y=10)
 
-lbl_token = Label(root, text="TOKEN", font=("Helvetica", 12))
+lbl_token = Label(root, text="LEXEME", font=("Helvetica", 12))
 lbl_token.place(x=600, y=10)
 
-lbl_line = Label(root, text="LEXEME", font=("Helvetica", 12))
+lbl_line = Label(root, text="TOKEN", font=("Helvetica", 12))
 lbl_line.place(x=720, y=10)
 
 v0 = IntVar()
